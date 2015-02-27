@@ -10,26 +10,30 @@ window.onload = function(){
   requestAnimationFrame( animate );
 
   // create a texture from an image path
-  var texture = PIXI.Texture.fromImage("bunny.png");
+  var texture = PIXI.Texture.fromImage("blob2.png");
+  var num = 6
+  var blobs =[]
   // create a new Sprite using the texture
-  var bunny = new PIXI.Sprite(texture);
 
-  // center the sprites anchor point
-  bunny.anchor.x = 0.5;
-  bunny.anchor.y = 0.5;
+  for(var i=0;i<num;i++){
+    blob =  new PIXI.Sprite(texture)
+    blob.anchor.x = 0.5;
+    blob.anchor.y = 0.5;
+    var move = 20*i
+    blob.position.x = 200 + (20*i);
+    blob.position.y = 150;
+    blobs.push(blob);
+    stage.addChild(blob);
+  }
 
-  // move the sprite t the center of the screen
-  bunny.position.x = 200;
-  bunny.position.y = 150;
-
-  stage.addChild(bunny);
+  stage.addChild(blob);
 
   function animate() {
 
       requestAnimationFrame( animate );
 
       // just for fun, lets rotate mr rabbit a little
-      bunny.rotation += 0.1;
+      // blob.rotation += 0.1;
 
       // render the stage   
       renderer.render(stage);
