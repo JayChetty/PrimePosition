@@ -7,7 +7,7 @@ window.onload = function(){
 
   // create a renderer instance.
   var renderer = PIXI.autoDetectRenderer(800, 800);
-  var team = new Team(30);
+  var team = new Team(33);
   var texture = PIXI.Texture.fromImage("blob2.png");
   var firstGroup = new TeamView(stage, team, texture);
   $('body').append(firstGroup.render().el)

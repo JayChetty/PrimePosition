@@ -18,6 +18,8 @@ var TeamView = View.extend({
     this.texture = texture;
     this.groups = [];
     this.structure = this.team.groupOptions()[0];
+    this.resetting = false;
+    this.nextStructure;
   },
   render:function(){
     this.renderWithTemplate(this);
@@ -31,14 +33,11 @@ var TeamView = View.extend({
     if(ev){
       ev.preventDefault; 
     }
-    console.log('event', ev)
-    console.log('index', ev.delegateTarget.dataset.index)
-    index = ev.delegateTarget.dataset.index
-    this.structure = this.team.groupOptions()[index]
-    this.clear();
-    this.addBlobs();
-    this.basePosition();
+    this.resetting = true;
     this.step = 0;
+    index = ev.delegateTarget.dataset.index
+    //will be used once it has reset
+    this.nextStructure = this.team.groupOptions()[index]     
   },
 
   showStructureOptions:function(){
@@ -50,7 +49,37 @@ var TeamView = View.extend({
     },this)
   },
 
-  changeFormation: function(){   
+  changeFormation:function(){
+    if (this.resetting){
+      this.backToLine()
+    } else {
+      this.intoFormation();
+    }
+  },
+
+  backToLine: function(){
+    if (this.step < this.moveSteps){
+      console.log('changing formation size group', this.structure.sizeGroup)
+      var groupLength = this.spacing * this.structure.sizeGroup;
+      this.groups.forEach(function(group){
+        group.forEach(function(blob){
+          blob.position.y = blob.position.y - (0.5*group.id);
+          var xMoveAmount = (groupLength * group.id)/this.moveSteps;
+          blob.position.x = blob.position.x + xMoveAmount;
+        },this)
+      },this);
+      this.step++;
+    } else{//reset now go back to the position
+      this.clear();
+      this.structure = this.nextStructure;
+      this.addBlobs();
+      this.basePosition(); 
+      this.step = 0;
+      this.resetting = false; 
+    }
+  },  
+
+  intoFormation: function(){   
     if (this.step < this.moveSteps){
       console.log('changing formation size group', this.structure.sizeGroup)
       var groupLength = this.spacing * this.structure.sizeGroup;
