@@ -90,7 +90,7 @@ NumberGroupView.prototype = {
       this.sprite_groups.forEach(function(group){
         var groupLength = this.spacing * group.length ;
         group.forEach(function(blob){
-          blob.position.y = blob.position.y - (0.5*group.id);
+          blob.position.y = blob.position.y - (0.3*group.id);
           var xMoveAmount = (groupLength * group.id)/this.moveSteps;
           blob.position.x = blob.position.x + xMoveAmount;
         },this)
@@ -109,7 +109,7 @@ NumberGroupView.prototype = {
     var groupLength = this.spacing * this.model.currentStructure.sizeGroup;
     this.sprite_groups.forEach(function(group){
       group.forEach(function(blob){
-        blob.position.y = blob.position.y + (0.5*group.id);
+        blob.position.y = blob.position.y + (0.3*group.id);
         var xMoveAmount = (groupLength * group.id)/this.moveSteps;
         blob.position.x = blob.position.x - xMoveAmount;
       },this)
