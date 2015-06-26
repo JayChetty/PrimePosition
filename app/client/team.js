@@ -6,19 +6,32 @@ var Team = function(size){
 
 Team.prototype = {
   groupOptions: function(){
-    var primeIndex  = primes.indexOf(this.size)
-    var isPrime = primeIndex > -1;
-    if(isPrime){//quick exit if prime
-      return [ { numGroups:1, sizeGroup:this.size } ];
-    }
+    
+    // var baseGroup =  [ { numGroups:1, sizeGroup:this.size } ] ;
+    // if(isPrime){//quick exit if prime
+    //   return baseGroup;
+    // }
 
     var primeFactors = primes.filter(function(prime){
       return this.size%prime == 0;
     }, this)
 
-    return primeFactors.map(function(primeFactor){
-      return {numGroups:(this.size/primeFactor),sizeGroup:primeFactor}
+    var factors = [1].concat(primeFactors)
+
+    console.log('primefactors', factors)
+    var isPrime = primes.indexOf(this.size) > -1;
+    if(!isPrime){factors.push(this.size)}
+
+    var groups = factors.map(function(primeFactor){
+      return { numGroups:(this.size/primeFactor),sizeGroup:primeFactor }
     }, this)
+
+    console.log('groups', groups)
+
+    // console.log('basegroup', baseGroup.concat(groups));
+
+    // return baseGroup.concat(groups);
+    return groups
 
   }
 }

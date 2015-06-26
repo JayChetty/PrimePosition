@@ -14,15 +14,15 @@ it('size should default to 1', function(){
 
 it('should give out simple prime group for prime', function(){
   var team = new Team(3);
-  expect(team.groupOptions()).to.deep.equal([{numGroups:1,sizeGroup:3}]);
+  expect(team.groupOptions()).to.deep.equal([{numGroups:3,sizeGroup:1}, {numGroups:1,sizeGroup:3}]);
 })
 
 it('should give prime group breakdown for composite', function(){
   var team = new Team(4);
-  expect(team.groupOptions()).to.deep.equal([{numGroups:2,sizeGroup:2}]);
+  expect(team.groupOptions()).to.deep.equal([{numGroups:4,sizeGroup:1},{numGroups:2,sizeGroup:2}, {numGroups:1,sizeGroup:4}]);
 })
 
 it('should give multiple for those with options', function(){
   var team = new Team(10);
-  expect(team.groupOptions()).to.deep.equal([{numGroups:5,sizeGroup:2},{numGroups:2,sizeGroup:5}]);
+  expect(team.groupOptions()).to.deep.equal([{numGroups:10,sizeGroup:1},{numGroups:5,sizeGroup:2},{numGroups:2,sizeGroup:5}, {numGroups:1,sizeGroup:10}]);
 })
