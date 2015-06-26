@@ -28,7 +28,8 @@ _.extend(NumberGroup.prototype, Events, {
     var index = _.findIndex(this.groupOptions, function(option){
       return option.sizeGroup === structureSize;
     })
-    if(index < 0){return false;}
+    if( index < 0 || this.currentStructure.sizeGroup === structureSize) {return false;}
+
     this.currentStructure = this.groupOptions[index];
     this.trigger('change');
   }
