@@ -7,7 +7,13 @@ var NumberGroupView = function(options){
 
   this.sprites = [];
   this.sprite_groups = [];
+  this.nextStructure = {};
+  this.resetting = false;
+  this.step = 0;
+
+  this.moveSteps = 60;
   this.spacing = 20;
+  this.groupLength =60;
 
   //add sprites
   for(var i=0;i<this.model.size;i++){
@@ -20,20 +26,30 @@ var NumberGroupView = function(options){
     console.log('adding sprite to stage', this.stage, sprite)
     this.stage.addChild(sprite);
   }
-  //set listener to sprites
-  // sprites.forEach(function(sprite){
-  //   sprite.mousedown = function(data){
-  //     this.setStructure(sprite.number)
-  //   }.bind(this)
-  // }.bind(this))
+
+  this.sprites.forEach(function(sprite){
+    sprite.mousedown = function(data){
+      console.log('mousedown yo')
+      this.setStructure(sprite.number)
+    }.bind(this)
+  }.bind(this))
   
   this.groupSprites();//set inital grouping
   this.basePosition();//go to base position
+
+  this.model.on('change', function(){
+    console.log('structure has changed')
+    //out of position so regroup
+    if(this.model.currentStructure.sizeGroup != this.model.size){
+      this.resetting = true;
+    }
+  }.bind(this))
 
 }
 
 NumberGroupView.prototype = {
   setStructure: function(structureSize){
+    console.log('setting structure size', structureSize)
     this.model.setStructureSize(structureSize);
   },
 
@@ -60,6 +76,54 @@ NumberGroupView.prototype = {
       },this)
     },this);
   },
+
+  // //moving
+  // changeFormation:function(){
+  //   if (this.resetting){
+  //     this.backToLine()
+  //   } else {
+  //     this.intoFormation();
+  //   }
+  // },
+
+  // backToLine: function(){
+  //   if (this.step < this.moveSteps){
+  //     // var groupLength = this.spacing * this.structure.sizeGroup;
+  //     this.groups.forEach(function(group){
+  //       group.forEach(function(blob){
+  //         blob.position.y = blob.position.y - (0.5*group.id);
+  //         var xMoveAmount = (group.length * group.id)/this.moveSteps;
+  //         blob.position.x = blob.position.x + xMoveAmount;
+  //       },this)
+  //     },this);
+  //     this.step++;
+  //   } else{//reset now go to the positin you 
+  //     console.log('reset now going back to position')
+  //     this.groupSprites();
+  //     // this.structure = this.nextStructure;
+  //     // this.addBlobs();
+  //     this.basePosition(); 
+  //     this.step = 0;
+  //     this.resetting = false; 
+  //   }
+  // },  
+
+  // intoFormation: function(){   
+  //   if (this.step < this.moveSteps){
+  //     var groupLength = this.spacing * this.structure.sizeGroup;
+  //     this.groups.forEach(function(group){
+  //       group.forEach(function(blob){
+  //         blob.position.y = blob.position.y + (0.5*group.id);
+  //         var xMoveAmount = (groupLength * group.id)/this.moveSteps;
+  //         blob.position.x = blob.position.x - xMoveAmount;
+  //       },this)
+  //     },this);
+  //     this.step++;
+  //   }
+  // },
+
+
+
 }
 
 module.exports = NumberGroupView;

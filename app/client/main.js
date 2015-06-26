@@ -25,7 +25,8 @@ window.onload = function(){
 
   function animate() {
       requestAnimationFrame( animate );
-      // firstGroup.changeFormation();  
+      // firstGroup.changeFormation();
+      // firstGroup.checkStructureAndReposition()
       renderer.render(stage);
   }
 }

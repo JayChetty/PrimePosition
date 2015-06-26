@@ -31,6 +31,7 @@ _.extend(NumberGroup.prototype, Events, {
     })
     if(index < 0){return false;}
     this.currentStructure = this.groupOptions[index];
+    this.trigger('change');
   }
 });
 
