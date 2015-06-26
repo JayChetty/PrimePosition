@@ -2,15 +2,13 @@ var View = require('ampersand-view');
 var _ = require('underscore');
 
 var TeamView = View.extend({
-  template: '<div></div>',
+  // template: '<div></div>',
+
   moveSteps: 60,
   spacing: 20,
   step:0,
-
   groupLength:60,
-  events: {
-    'click .structure': 'changeStructure'
-  },
+
 
   initialize: function (stage, team, texture, startingY) {
     console.log('init', this.moveSteps)
@@ -29,10 +27,10 @@ var TeamView = View.extend({
 
   render:function(){
     console.log('rendering')
-    this.renderWithTemplate(this);
+    // this.renderWithTemplate(this);
     this.addBlobs();
     this.basePosition();
-    this.showStructureOptions();
+    // this.showStructureOptions();
     return this;
   },
 
@@ -47,24 +45,6 @@ var TeamView = View.extend({
     //will be used once it has reset
     this.nextStructure = structure;
     return true  
-  },
-
-  changeStructure:function(ev){
-    if(ev){
-      ev.preventDefault; 
-    }
-    this.resetting = true;
-    this.step = 0;
-    index = ev.delegateTarget.dataset.index
-    //will be used once it has reset
-    this.nextStructure = this.groupOptions[index]     
-  },
-
-  showStructureOptions:function(){
-    this.groupOptions.forEach(function(structure,i){
-      link = "<button class='structure' data-index=" + i+ ">" + structure.sizeGroup + "</button>"
-      $(this.el).append(link);
-    },this)
   },
 
   changeFormation:function(){
