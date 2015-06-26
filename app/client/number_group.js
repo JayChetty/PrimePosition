@@ -1,4 +1,3 @@
-var primes = require('./primes')
 var _ = require('underscore')
 var Events = require('ampersand-events');
 
@@ -10,13 +9,13 @@ var NumberGroup = function(size){
 
 _.extend(NumberGroup.prototype, Events, {
   calcGroupOptions: function(){
-    var primeFactors = primes.filter(function(prime){
-      return this.size%prime == 0;
+    var numbers = [];
+    for (var i = 1; i <= 100; i++) {
+       numbers.push(i);
+    }
+    var factors = numbers.filter(function(number){
+      return this.size%number == 0;
     }, this)
-    var factors = [1].concat(primeFactors)
-
-    var isPrime = primes.indexOf(this.size) > -1;
-    if(!isPrime){factors.push(this.size)}
 
     var groups = factors.map(function(primeFactor){
       return { numGroups:(this.size/primeFactor),sizeGroup:primeFactor }
