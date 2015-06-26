@@ -12,7 +12,7 @@ window.onload = function(){
 
   // create a renderer instance.
   var renderer = PIXI.autoDetectRenderer(800, 800);
-  var numberGroup = new NumberGroup(10);
+  var numberGroup = new NumberGroup(12);
   // var team2 = new Team(10);
   var texture = PIXI.Texture.fromImage("blob2.png");
   var numberGroupView = new NumberGroupView({ model:numberGroup, texture:texture , stage:stage });
@@ -25,7 +25,7 @@ window.onload = function(){
 
   function animate() {
       requestAnimationFrame( animate );
-      // firstGroup.changeFormation();
+      numberGroupView.changeFormation();
       // firstGroup.checkStructureAndReposition()
       renderer.render(stage);
   }
