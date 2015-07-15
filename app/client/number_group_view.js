@@ -1,9 +1,15 @@
 var NumberGroupView = function(options){
   var options = options || {};
+  this.myContainer = new PIXI.DisplayObjectContainer();
+  this.myContainer.interactive = true;
+  this.myContainer.draggable(
+    {stop: this.dropped.bind(this)}
+  );
   this.model = options.model;
   this.texture = options.texture;
   this.stage = options.stage;
-  this.startY = options.startY || 10;
+  this.anchorX = options.anchorX || 10;
+  this.anchorY = options.anchorY || 10;
 
   this.sprites = [];
   this.sprite_groups = [];
@@ -12,7 +18,11 @@ var NumberGroupView = function(options){
   this.step = 60;//not moving
   this.moveSteps = 60;
   this.spacing = 20;
-  this.groupLength =60;
+
+  this.targetX = 200;
+  this.targetY = 200;
+
+  this.targetView = options.targetView;
 
   //add sprites
   for(var i=0;i<this.model.size;i++){
@@ -21,15 +31,17 @@ var NumberGroupView = function(options){
     sprite.anchor.y = 0.5;
     sprite.interactive = true;
     sprite.number = i + 1;
-    this.sprites.push(sprite)
-    this.stage.addChild(sprite);
+    this.sprites.push(sprite);
+    this.myContainer.addChild(sprite);
   }
+  this.stage.addChild(this.myContainer);
 
   this.sprites.forEach(function(sprite){
-    sprite.mousedown = function(data){
+    sprite.click = function(data){
       this.setTargetStructure(sprite.number)
     }.bind(this)
   }.bind(this))
+
   
   this.groupSprites();//set inital grouping
   this.basePosition();//go to base position
@@ -47,6 +59,20 @@ var NumberGroupView = function(options){
 }
 
 NumberGroupView.prototype = {
+  dropped: function(item, mouse){
+    console.log("I just got dropped yo", mouse.originalEvent.clientX, mouse.originalEvent.clientY);
+    var dropX = mouse.originalEvent.clientX;
+    var dropY = mouse.originalEvent.clientY;
+    if(!this.targetView.inRange(dropX, dropY)){return};
+    success = this.targetView.attemptFill(dropX, dropY, this.model);
+    if(success){
+      this.remove()
+    }
+  },
+
+  remove: function(){
+    console.log('number group view, managed to drop')
+  },
   setTargetStructure: function(structureSize){
     this.model.setStructureSize(structureSize);
   },
@@ -68,9 +94,9 @@ NumberGroupView.prototype = {
   basePosition:function(){
     this.sprite_groups.forEach(function(group,i){
       group.forEach(function(sprite,j){
-        sprite.position.y = this.startY;
+        sprite.position.y = this.anchorY;
         var moveIndex = (group.id*this.model.currentStructure.sizeGroup) + j;
-        sprite.position.x = 200 + (this.spacing*moveIndex);;
+        sprite.position.x = this.anchorX + (this.spacing*moveIndex);;
       },this)
     },this);
   },
