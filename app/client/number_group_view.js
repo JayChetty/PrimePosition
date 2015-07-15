@@ -64,14 +64,15 @@ NumberGroupView.prototype = {
     var dropX = mouse.originalEvent.clientX;
     var dropY = mouse.originalEvent.clientY;
     if(!this.targetView.inRange(dropX, dropY)){return};
-    success = this.targetView.attemptFill(dropX, dropY, this.model);
+    success = this.targetView.attemptFill(dropX, dropY, this.model.currentStructure);
     if(success){
+      console.log('success')
       this.remove()
     }
   },
 
   remove: function(){
-    console.log('number group view, managed to drop')
+    this.myContainer.removeChildren();
   },
   setTargetStructure: function(structureSize){
     this.model.setStructureSize(structureSize);

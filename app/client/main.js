@@ -12,11 +12,12 @@ window.onload = function(){
 
   // create a renderer instance.
   var renderer = PIXI.autoDetectRenderer(800, 800);
-  var numberGroup = new NumberGroup(4);
+  var numberGroup = new NumberGroup(2);
   // var team2 = new Team(10);
   var texture = PIXI.Texture.fromImage("blob2.png");
-  var targetView = new TargetGroupView({ texture:texture , stage:stage});
-  var numberGroupView = new NumberGroupView({ model:numberGroup, texture:texture , stage:stage, targetView:targetView});
+  var emptyTexture = PIXI.Texture.fromImage("empty_blob.png");
+  var targetView = new TargetGroupView({ stage:stage, texture:emptyTexture , completeTexture: texture});
+  var numberGroupView = new NumberGroupView({ model:numberGroup, texture:texture, stage:stage, targetView:targetView});
   
 
 

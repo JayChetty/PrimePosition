@@ -6,6 +6,7 @@ var TargetView = function(options){
   this.anchorX = options.anchorX || 200;
   this.anchorY = options.anchorY || 200;
   this.texture = options.texture;
+  this.completeTexture = options.completeTexture
   this.xOffset = 2;
   this.yOffset = 76;
 
@@ -40,23 +41,32 @@ TargetView.prototype = {
     console.log('checking range', x, y)
     return(x > (this.anchorX + this.xOffset) && y > (this.anchorY + this.yOffset))
   },
-  attemptFill:function(x,y,numberGroup){
-    console.log("they trying to fill me", x, y, numberGroup);
+  attemptFill:function(x,y,structure){
+    console.log("they trying to fill me", x, y, structure);
     if(!this.inRange){return false;}
     var position = this.getDroppedPosition(x,y);
     console.log('position', position);
-    var fillXLength = numberGroup.sizeGroup;
-    var fillYLength = numberGroup.numGroups;
-    var fitsX = fillXLength < (this.X - position.xPosition)
-    var fitsY = fillYLength < (this.Y - position.YPosition)
+    var fillXLength = structure.sizeGroup;
+    var fillYLength = structure.numGroups;
+    console.log('fillXLength', fillXLength)
+    console.log('fillYLength', fillYLength)
+    console.log('this.x', this.x)
+    console.log('this.y', this.y)
+    var fitsX = fillXLength < (this.x - position.xPosition)
+    var fitsY = fillYLength < (this.y - position.yPosition)
+    console.log('fitsX', fitsX)
+    console.log('fitsY ', fitsY )
     if(!fitsX || !fitsY){return false}
+    console.log('trying to set group')
     //place group
     //get those that are covered by group
     //mark as filled and show in change of texture
-    for(var i=y; i<( y + fillYLength ); i++){
-      for(var j=x;j<( x+ fillXLength ) ;j++){
-        var sprite = this.sprites[y][x]
+    for(var i=position.yPosition; i<( position.yPosition + fillYLength ); i++){
+      for(var j=position.xPosition;j<( position.xPosition + fillXLength ) ;j++){
+        console.log('i j', i, j)
+        var sprite = this.sprites[i][j]
         sprite.filled = true
+        sprite.setTexture(this.completeTexture)
         // sprite.texture = something
       }
     }
